@@ -1,0 +1,22 @@
+# Isolated local MySQL 8 environment for MDM database migration tests only.
+services:
+  mysql:
+    image: mysql:8.0
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--log-bin-trust-function-creators=1"
+    environment:
+      MYSQL_ROOT_PASSWORD: mdm_test_root
+      MYSQL_DATABASE: mdm_test
+      MYSQL_USER: mdm_test
+      MYSQL_PASSWORD: mdm_test
+    ports:
+      - "127.0.0.1:33080:3306"
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+      start_period: 10s

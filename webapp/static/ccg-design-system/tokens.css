@@ -1,0 +1,76 @@
+/**
+ * CCGtools Design Tokens V1
+ * Namespaced to coexist with the legacy MDM stylesheet during migration.
+ */
+
+:root {
+  --ccg-background: #fafafa;
+  --ccg-surface: #ffffff;
+  --ccg-surface-muted: #f4f4f5;
+  --ccg-surface-subtle: #fbfbfc;
+  --ccg-surface-hover: #f4f4f5;
+  --ccg-foreground: #09090b;
+  --ccg-foreground-muted: #71717a;
+  --ccg-foreground-subtle: #a1a1aa;
+  --ccg-border: #e4e4e7;
+  --ccg-border-strong: #d4d4d8;
+
+  --ccg-primary: #dc2626;
+  --ccg-primary-hover: #b91c1c;
+  --ccg-primary-active: #991b1b;
+  --ccg-primary-foreground: #ffffff;
+
+  --ccg-success: #16a34a;
+  --ccg-success-bg: #f0fdf4;
+  --ccg-success-border: #bbf7d0;
+  --ccg-info: #2563eb;
+  --ccg-info-bg: #eff6ff;
+  --ccg-info-border: #bfdbfe;
+  --ccg-warning: #d97706;
+  --ccg-warning-bg: #fefce8;
+  --ccg-warning-border: #fef08a;
+
+  --ccg-font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+  --ccg-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --ccg-text-xs: 11.5px;
+  --ccg-text-sm: 12.5px;
+  --ccg-text-base: 13.5px;
+  --ccg-text-md: 15px;
+  --ccg-text-lg: 18px;
+
+  --ccg-space-1: 4px;
+  --ccg-space-2: 8px;
+  --ccg-space-3: 12px;
+  --ccg-space-4: 16px;
+  --ccg-space-5: 20px;
+  --ccg-space-6: 24px;
+  --ccg-radius-sm: 4px;
+  --ccg-radius-md: 6px;
+  --ccg-radius-lg: 8px;
+  --ccg-radius-full: 9999px;
+
+  --ccg-sidebar-width: 248px;
+  --ccg-sidebar-collapsed-width: 64px;
+  --ccg-header-height: 52px;
+  --ccg-content-padding: 24px;
+
+  --ccg-row-height: 42px;
+  --ccg-control-height: 32px;
+  --ccg-table-cell-py: 9px;
+  --ccg-table-cell-px: 12px;
+  --ccg-table-header-py: 10px;
+  --ccg-table-header-px: 12px;
+  --ccg-table-body-font: 13px;
+  --ccg-table-header-font: 12px;
+}
+
+#app-shell[data-density="compact"] {
+  --ccg-row-height: 33px;
+  --ccg-control-height: 28px;
+  --ccg-table-cell-py: 5px;
+  --ccg-table-cell-px: 10px;
+  --ccg-table-header-py: 6px;
+  --ccg-table-header-px: 10px;
+  --ccg-table-body-font: 12.5px;
+  --ccg-table-header-font: 11.5px;
+}

@@ -1,0 +1,49 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+!**/.env.example
+secrets/
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Python and JavaScript runtime
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+node_modules/
+.scratch/
+.DS_Store
+._*
+
+# Local databases, logs, volumes and generated output
+data/
+volumes/
+.docker-volumes/
+logs/
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.dump
+*.sql.gz
+output/
+generated/
+artifacts/
+exports/
+*.tar.gz
+*.csv
+*.xls
+*.xlsx
+
+# Checked-in fictional fixtures
+!**/tests/fixtures/synthetic/**/*.csv
+!**/tests/fixtures/synthetic/**/*.xls
+!**/tests/fixtures/synthetic/**/*.xlsx

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>CCGtools-open 主数据</title>
+  <link rel="stylesheet" href="/static/mdm.css">
+  <link rel="stylesheet" href="/static/product-sku-finder.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+</head>
+<body class="ccg-page">
+  <div class="ccg-shell" id="app-shell" data-density="comfortable">
+    <section class="ccg-main">
+      <header class="ccg-top-header">
+        <nav class="ccg-breadcrumb" aria-label="当前位置">
+          <a href="/">CCGtools-open</a><span class="ccg-breadcrumb-separator">/</span><span>Master Data</span><span class="ccg-breadcrumb-separator">/</span><strong class="ccg-breadcrumb-current" id="topbar-title">Overview</strong>
+        </nav>
+        <div class="ccg-header-status">
+          <span id="readonly-indicator" class="ccg-readonly" hidden>只读</span>
+        </div>
+      </header>
+
+      <main id="mdm-content" class="ccg-workspace content" tabindex="-1" aria-live="polite">
+        <div class="page-loading" aria-label="正在加载">
+          <span class="skeleton skeleton-title"></span>
+          <span class="skeleton skeleton-line"></span>
+          <div class="skeleton-grid"><span></span><span></span><span></span><span></span></div>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <div id="confirm-layer" class="dialog-layer" hidden>
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
+      <div id="dialog-icon" class="dialog-icon" aria-hidden="true">!</div>
+      <h2 id="dialog-title">确认操作</h2>
+      <div id="dialog-copy" class="dialog-copy"></div>
+      <div id="dialog-error" class="inline-error" hidden></div>
+      <div class="dialog-actions">
+        <button class="ccg-button ccg-button-secondary" type="button" data-action="dialog-cancel">取消</button>
+        <button id="dialog-confirm" class="ccg-button ccg-button-danger" type="button" data-action="dialog-confirm">确认</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>CCGtools-open 主数据工作区需要启用 JavaScript。</noscript>
+  <script id="customer-import-ui-contract" type="application/json">{}</script>
+  <script id="product-import-ui-contract" type="application/json">{}</script>
+  <script id="sku-import-ui-contract" type="application/json">{}</script>
+  <script id="goods-import-ui-contract" type="application/json">{}</script>
+  <script src="/static/js/common.js"></script>
+  <script src="/static/ccg-design-system/shell.js"></script>
+  <script src="/static/js/product-sku-finder.js"></script>
+  <script src="/static/js/mdm_product_sku.js"></script>
+  <script src="/static/js/mdm_reference_masters.js"></script>
+  <script src="/static/js/mdm_customer_import.js"></script>
+  <script src="/static/js/mdm_product_import.js"></script>
+  <script src="/static/js/mdm_sku_import.js"></script>
+  <script src="/static/js/mdm_goods_import.js"></script>
+  <script src="/static/js/mdm.js"></script>
+</body>
+</html>

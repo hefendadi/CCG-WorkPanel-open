@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sales Actual</title>
+  <link rel="stylesheet" href="/static/sales-actual.css">
+  <link rel="stylesheet" href="/static/product-sku-finder.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+</head>
+<body>
+<main class="sales-actual-page" data-ccg-shell-content>
+  <nav class="ccg-local-tabs" aria-label="Sales Actual"><a class="ccg-local-tab" href="/sales/actual" data-nav="dashboard">销售分析</a><a class="ccg-local-tab" href="/sales/actual/import" data-nav="import">数据维护</a></nav>
+  <span id="user" class="ccg-shell-hooks" aria-hidden="true"></span>
+  <section id="dashboard" class="sales-dashboard" hidden>
+    <header class="ccg-page-header sales-dashboard-header">
+      <div><h1 id="dashboard-title">销售实绩</h1><p id="dashboard-subtitle">按 Product、Channel 与销售代表查看当前月 ERP 出库实绩。</p></div>
+      <div class="ccg-page-actions sales-dashboard-actions"><label class="ccg-filter-field sales-month-field"><span class="ccg-filter-label">月份</span><select id="filter-month" class="ccg-select"></select></label><div class="ccg-density-toggle" aria-label="表格密度"><button class="ccg-density-option active" type="button" data-action="ui-density" data-density-value="comfortable" aria-pressed="true">舒适</button><button class="ccg-density-option" type="button" data-action="ui-density" data-density-value="compact" aria-pressed="false">紧凑</button></div></div>
+    </header>
+
+    <div id="current-batch" class="ccg-context-strip sales-batch-context" aria-label="当前数据快照"></div>
+
+    <section class="sales-total-actual" aria-labelledby="total-actual-label">
+      <div><span id="total-actual-label">出库总量</span><strong id="kpi-mtd">—</strong><small>Pcs · 当前筛选条件</small></div>
+      <dl class="sales-summary-meta"><div><dt>Product</dt><dd id="kpi-products">—</dd></div><div><dt>SKU</dt><dd id="kpi-skus">—</dd></div></dl>
+    </section>
+
+    <section class="ccg-filter-bar sales-filter-bar" aria-label="销售实绩筛选">
+      <div id="sales-product-sku-finder" class="sales-product-filter"></div>
+      <label class="ccg-filter-field"><span class="ccg-filter-label">Channel</span><select id="filter-channel" class="ccg-select"><option value="">全部 Channel</option></select></label>
+      <label class="ccg-filter-field"><span class="ccg-filter-label">SalesRep</span><select id="filter-salesrep" class="ccg-select"><option value="">全部 SalesRep</option></select></label>
+      <button id="clear-filters" class="ccg-button ccg-button-secondary" type="button">重置筛选</button>
+    </section>
+
+    <div id="dashboard-state" class="ccg-state ccg-state-loading sales-dashboard-state" role="status" aria-live="polite">
+      <div id="dashboard-state-icon" class="ccg-state-icon" aria-hidden="true">…</div>
+      <div class="ccg-state-copy"><h2 id="state-title">正在加载销售实绩</h2><p id="state-detail">正在读取当前已发布数据…</p></div>
+      <button id="dashboard-retry" class="ccg-button ccg-button-secondary" type="button" hidden>重试</button>
+    </div>
+
+    <div id="dashboard-content" hidden>
+      <div id="analysis-tabs" class="ccg-segmented sales-view-switcher" role="tablist" aria-label="销售分析视图">
+        <button class="ccg-segmented-option active" type="button" role="tab" aria-selected="true" aria-controls="product-view" tabindex="0" data-view="product">Product</button>
+        <button class="ccg-segmented-option" type="button" role="tab" aria-selected="false" aria-controls="channel-view" tabindex="-1" data-view="channel">Channel</button>
+        <button class="ccg-segmented-option" type="button" role="tab" aria-selected="false" aria-controls="salesrep-view" tabindex="-1" data-view="salesrep">SalesRep</button>
+      </div>
+
+      <section id="product-view" class="ccg-panel sales-view-panel" role="tabpanel" data-view-panel="product">
+        <div class="ccg-panel-header"><div><h2>Product MTD</h2><p>按 Product 查看本月出库数量；展开行可查看 SKU。</p></div></div>
+        <div class="ccg-table-scroll ccg-table-scroll-dashboard"><table id="product-table" class="ccg-table sales-actual-table"></table></div>
+        <div class="ccg-pagination"><span id="product-page-info"></span><div class="ccg-pagination-controls"><button type="button" class="ccg-button ccg-button-secondary" data-page="product" data-delta="-1">上一页</button><button type="button" class="ccg-button ccg-button-secondary" data-page="product" data-delta="1">下一页</button></div></div>
+      </section>
+
+      <section id="channel-view" class="ccg-panel sales-view-panel" role="tabpanel" data-view-panel="channel" hidden>
+        <div class="ccg-panel-header"><div><h2>Channel × Product</h2><p>查看每个 Channel 下的 Product 出库结构。</p></div></div>
+        <div class="ccg-table-scroll ccg-table-scroll-dashboard"><table id="channel-table" class="ccg-table sales-actual-table"></table></div>
+        <div class="ccg-pagination"><span id="channel-page-info"></span><div class="ccg-pagination-controls"><button type="button" class="ccg-button ccg-button-secondary" data-page="channel" data-delta="-1">上一页</button><button type="button" class="ccg-button ccg-button-secondary" data-page="channel" data-delta="1">下一页</button></div></div>
+      </section>
+
+      <section id="salesrep-view" class="ccg-panel sales-view-panel" role="tabpanel" data-view-panel="salesrep" hidden>
+        <div class="ccg-panel-header"><div><h2>SalesRep × Product</h2><p>查看每位销售代表负责的 Product 出库数量。</p></div></div>
+        <div class="ccg-table-scroll ccg-table-scroll-dashboard"><table id="salesrep-table" class="ccg-table sales-actual-table"></table></div>
+        <div class="ccg-pagination"><span id="salesrep-page-info"></span><div class="ccg-pagination-controls"><button type="button" class="ccg-button ccg-button-secondary" data-page="salesrep" data-delta="-1">上一页</button><button type="button" class="ccg-button ccg-button-secondary" data-page="salesrep" data-delta="1">下一页</button></div></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="landing" class="sales-maintenance" hidden>
+    <header class="ccg-page-header">
+      <div><h1>销售实绩数据维护</h1><p>上传 Demo ERP 销售出库 Excel，检查冻结 Preview，并在 Publish Gate 通过后发布。</p></div>
+      <div class="ccg-page-actions"><div class="ccg-density-toggle" aria-label="表格密度"><button class="ccg-density-option active" type="button" data-action="ui-density" data-density-value="comfortable" aria-pressed="true">舒适</button><button class="ccg-density-option" type="button" data-action="ui-density" data-density-value="compact" aria-pressed="false">紧凑</button></div></div>
+    </header>
+    <ol class="ccg-import-workflow sales-maintenance-workflow" aria-label="数据维护流程"><li class="active"><span>1</span>Import</li><li><span>2</span>Preview</li><li><span>3</span>Publish</li></ol>
+    <div id="readonly-banner" class="ccg-readonly-banner" hidden>当前为只读权限。你可以查看 Batch 与 Preview，上传和发布操作不可用。</div>
+    <div id="landing-state" class="ccg-state ccg-state-loading" role="status" aria-live="polite"><div class="ccg-state-icon" aria-hidden="true">…</div><div class="ccg-state-copy"><h2>正在加载 Data Maintenance</h2><p>正在读取现有 Import Batch…</p></div><button id="landing-retry" class="ccg-button ccg-button-secondary" type="button" hidden>重试</button></div>
+    <div id="landing-content" class="sales-maintenance-stack" hidden>
+      <section id="upload-panel" class="ccg-panel ccg-import-upload-panel">
+        <div class="ccg-panel-header"><div><h2>导入销售出库文件</h2><p>文件解析、MDM Mapping 与 Preview 生成沿用现有导入规则。</p></div><span class="ccg-status ccg-status-neutral">IMPORT</span></div>
+        <form id="upload-form" class="sales-upload-form">
+          <label class="ccg-import-dropzone" for="file"><span class="ccg-import-upload-icon" aria-hidden="true">↑</span><strong>选择 Demo ERP 销售出库 Excel</strong><small>仅接受现有 Import contract 支持的 .xlsx 文件</small><input id="file" name="file" type="file" accept=".xlsx" required></label>
+          <div class="sales-upload-actions"><span id="upload-file-name" class="muted">尚未选择文件</span><button id="upload-button" class="ccg-button ccg-button-primary" type="submit">上传并生成 Preview</button></div>
+          <div id="upload-progress" class="ccg-import-upload-progress" role="status" hidden><span class="ccg-status ccg-status-warning">PROCESSING</span><span>正在解析文件并生成冻结 Preview…</span></div>
+        </form>
+      </section>
+      <section class="ccg-panel sales-batch-panel">
+        <div class="ccg-panel-header"><div><h2>Import Batches</h2><p>选择 Batch 查看 Preview、Mapping 结果与 Publish Gate。</p></div><a class="ccg-button ccg-button-secondary" href="/sales/actual">查看销售分析</a></div>
+        <div class="ccg-table-scroll ccg-table-scroll-review"><table class="ccg-table sales-batch-table"><thead><tr><th>文件</th><th>月份</th><th class="number">Ready Rows</th><th>状态</th><th>操作</th></tr></thead><tbody id="batch-list"></tbody></table></div>
+        <div id="batch-empty" class="ccg-state" hidden><div class="ccg-state-icon" aria-hidden="true">0</div><div class="ccg-state-copy"><h2>尚无 Import Batch</h2><p>具备 EDIT 权限的用户可上传销售出库文件并生成 Preview。</p></div></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="preview" class="sales-maintenance" hidden>
+    <header class="ccg-page-header">
+      <div><h1 id="title">销售实绩 Preview</h1><p id="period">正在读取 Batch Context…</p></div>
+      <div class="ccg-page-actions sales-preview-actions"><div class="ccg-density-toggle" aria-label="表格密度"><button class="ccg-density-option active" type="button" data-action="ui-density" data-density-value="comfortable" aria-pressed="true">舒适</button><button class="ccg-density-option" type="button" data-action="ui-density" data-density-value="compact" aria-pressed="false">紧凑</button></div><span id="gate-badge" class="ccg-status ccg-status-neutral sales-gate-status">LOADING</span><button id="publish-button" disabled class="ccg-button ccg-button-primary" title="Publish 前需通过 Publish Gate">发布销售实绩</button></div>
+    </header>
+    <ol class="ccg-import-workflow sales-maintenance-workflow" aria-label="数据维护流程"><li class="complete"><span>1</span>Import</li><li class="active"><span>2</span>Preview</li><li id="publish-step"><span>3</span>Publish</li></ol>
+    <div id="preview-readonly-banner" class="ccg-readonly-banner" hidden>当前为只读权限。Preview 数据可查看，发布操作不可用。</div>
+    <div id="preview-state" class="ccg-state ccg-state-loading" role="status" aria-live="polite"><div class="ccg-state-icon" aria-hidden="true">…</div><div class="ccg-state-copy"><h2>正在加载 Preview</h2><p>正在读取冻结数据与 Publish Gate…</p></div><button id="preview-retry" class="ccg-button ccg-button-secondary" type="button" hidden>重试</button></div>
+    <div id="preview-content" class="sales-maintenance-stack" hidden>
+      <div id="file-info" class="ccg-context-strip sales-preview-context" aria-label="Batch Context"></div>
+      <section class="ccg-panel sales-gate-panel"><div class="ccg-panel-header"><div><h2>Publish Gate</h2><p>发布资格由现有服务端规则判断。</p></div></div><div class="ccg-panel-body"><div id="gate" class="sales-gate-message"></div><div id="confirm-area" class="sales-risk-confirm" hidden><label class="confirm-line"><input type="checkbox" id="drop-confirm"><span id="confirm-text">确认风险后允许发布</span></label></div><div id="publish-result" class="sales-publish-result" role="status" hidden></div></div></section>
+      <div id="headline" class="ccg-import-counts sales-preview-counts"></div>
+      <section class="ccg-panel"><div class="ccg-panel-header"><div><h2>Mapping 结果</h2><p>按现有 Mapping reason 查看行数、数量与 Raw Row 明细。</p></div></div><div id="mapping-cards" class="sales-reason-grid"></div></section>
+      <section class="ccg-panel"><div class="ccg-panel-header"><div><h2>Mapping Issues</h2><p>来自冻结 Preview 的已保存的 issue 记录。</p></div></div><div class="ccg-table-scroll ccg-table-scroll-review"><table id="issues" class="ccg-table sales-preview-table"></table></div></section>
+      <section id="row-detail" class="ccg-panel" hidden><div class="ccg-panel-header"><div><h2 id="row-detail-title">Raw Row 明细</h2><p>最多显示现有接口返回的 500 行。</p></div><button id="close-detail" class="ccg-button ccg-button-secondary" type="button">关闭</button></div><div class="ccg-table-scroll ccg-table-scroll-review"><table id="rows" class="ccg-table sales-preview-table"></table></div></section>
+      <section class="ccg-panel"><div class="ccg-panel-header sales-aggregate-header"><div><h2>冻结 Snapshot 汇总</h2><p>按已解析的 Product、SKU、Channel 与 SalesRep 维度查看。</p></div><div id="tabs" class="ccg-segmented" role="tablist" aria-label="Snapshot 汇总维度"><button data-dimension="product" class="ccg-segmented-option active" type="button" role="tab" aria-selected="true">Product</button><button data-dimension="sku" class="ccg-segmented-option" type="button" role="tab" aria-selected="false">SKU</button><button data-dimension="channel-product" class="ccg-segmented-option" type="button" role="tab" aria-selected="false">Channel × Product</button><button data-dimension="salesrep-product" class="ccg-segmented-option" type="button" role="tab" aria-selected="false">SalesRep × Product</button></div></div><div class="ccg-table-scroll ccg-table-scroll-review"><table id="aggregate" class="ccg-table sales-preview-table"></table></div></section>
+    </div>
+  </section>
+  <div id="message" class="ccg-state ccg-state-error sales-maintenance-message" role="alert" hidden><div class="ccg-state-icon" aria-hidden="true">!</div><div class="ccg-state-copy"><h2>操作未完成</h2><p id="message-copy"></p></div><button id="message-dismiss" class="ccg-button ccg-button-secondary" type="button">关闭</button></div>
+  <div id="publish-confirm-layer" class="sales-confirm-layer" hidden><section class="sales-confirm-dialog ccg-panel" role="dialog" aria-modal="true" aria-labelledby="publish-confirm-title" aria-describedby="publish-confirm-copy"><div class="ccg-panel-body"><span class="ccg-status ccg-status-warning">FINAL CHECK</span><h2 id="publish-confirm-title">确认发布销售实绩</h2><p id="publish-confirm-copy">发布后，该 Batch 将成为本月销售分析使用的当前快照。确认继续？</p><div class="sales-confirm-actions"><button id="publish-confirm-cancel" class="ccg-button ccg-button-secondary" type="button">取消</button><button id="publish-confirm-submit" class="ccg-button ccg-button-danger" type="button">确认发布</button></div></div></section></div>
+</main>
+<script src="/static/js/common.js"></script><script src="/static/ccg-design-system/shell.js"></script><script src="/static/js/product-sku-finder.js"></script><script src="/static/js/sales-dashboard-format.js"></script><script src="/static/js/sales-actual.js"></script><script src="/static/js/sales-dashboard.js"></script>
+</body></html>

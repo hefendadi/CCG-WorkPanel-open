@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>账号与权限管理</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#172033;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}header{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;background:#fff;border-bottom:1px solid #dde5f0}header a{color:#1747b8;text-decoration:none}main{max-width:1180px;margin:auto;padding:30px 24px}h1{margin:0 0 6px}.muted{color:#637087}.toolbar{display:flex;justify-content:space-between;align-items:center;margin:24px 0 14px}.panel{background:#fff;border:1px solid #e0e7f0;border-radius:10px;overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}th,td{text-align:left;padding:12px;border-bottom:1px solid #edf1f6;font-size:14px}th{color:#637087;background:#f8fafd}button{border:0;border-radius:6px;padding:8px 12px;background:#1e5eff;color:#fff;cursor:pointer}button.alt{background:#eaf1ff;color:#1747b8}button.danger{background:#fff0f0;color:#b42318}.badge{display:inline-block;border-radius:14px;padding:3px 8px;background:#eef7f2;color:#117a43}.badge.off{background:#f1f3f6;color:#637087}.actions{display:flex;gap:6px;flex-wrap:wrap}dialog{border:0;border-radius:12px;padding:0;width:min(680px,94vw);box-shadow:0 20px 60px #17203345}dialog::backdrop{background:#17203388}.dialog-body{padding:24px}label{display:grid;gap:5px;margin:12px 0;color:#43516a}input,select{padding:9px;border:1px solid #c8d2e1;border-radius:6px;font:inherit}.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.permissions{display:grid;grid-template-columns:1fr 160px;gap:8px 14px;align-items:center;margin:18px 0}.permissions label{display:contents}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.error{color:#b42318;min-height:20px}@media(max-width:650px){.grid{grid-template-columns:1fr}}
+  </style>
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+</head>
+<body>
+<span id="current-user" class="ccg-shell-hooks" aria-hidden="true"></span>
+<main data-ccg-shell-content>
+  <h1>账号与权限管理</h1><p class="muted">为每个账号分配 MDM、Sales Actual、Ordering 与 User Management 权限。</p>
+  <div class="toolbar"><strong id="count">用户</strong><button id="create-user">＋ 创建账号</button></div>
+  <div class="panel"><table><thead><tr><th>用户名</th><th>显示名称</th><th>角色</th><th>状态</th><th>MDM</th><th>Sales Actual</th><th>Ordering</th><th>User Management</th><th>操作</th></tr></thead><tbody id="users"></tbody></table></div>
+  <p id="page-error" class="error"></p>
+</main>
+<dialog id="user-dialog"><form id="user-form" class="dialog-body"><h2 id="form-title">创建账号</h2><input id="user-id" type="hidden"><div class="grid"><label>用户名<input id="username" required></label><label>显示名称<input id="display-name" required></label><label>角色<select id="role"><option value="operator">operator</option><option value="admin">admin</option></select></label><label id="active-label">状态<select id="active"><option value="1">启用</option><option value="0">停用</option></select></label><label id="password-label">初始密码<input id="password" type="password" minlength="6"></label></div><h3>模块权限</h3><div id="permission-grid" class="permissions"></div><p id="form-error" class="error"></p><div class="dialog-actions"><button type="button" class="alt" data-close>取消</button><button type="submit">保存</button></div></form></dialog>
+<dialog id="password-dialog"><form id="password-form" class="dialog-body"><h2>重置密码</h2><input id="password-user-id" type="hidden"><label>新密码<input id="reset-password" type="password" minlength="6" required></label><p id="password-error" class="error"></p><div class="dialog-actions"><button type="button" class="alt" data-close-password>取消</button><button type="submit">重置并撤销旧登录</button></div></form></dialog>
+<script src="/static/js/common.js"></script><script src="/static/ccg-design-system/shell.js"></script><script src="/static/js/user-management.js"></script>
+</body></html>

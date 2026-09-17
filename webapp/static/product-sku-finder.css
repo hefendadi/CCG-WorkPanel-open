@@ -1,0 +1,23 @@
+.product-sku-finder { position: relative; min-width: min(100%, 320px); }
+.product-sku-finder > label { display: grid; gap: 5px; }
+.product-sku-finder-label { color: #475467; font-size: 11px; font-weight: 650; }
+.product-sku-finder-input-wrap { position: relative; display: block; }
+.product-sku-finder input { width: 100%; min-height: 36px; padding: 7px 34px 7px 10px; border: 1px solid #d0d5dd; border-radius: 7px; background: #fff; color: #1d2939; font: inherit; }
+.product-sku-finder input:focus { border-color: #8098c7; outline: 2px solid rgba(57, 89, 154, .12); }
+.product-sku-finder-clear { position: absolute; top: 50%; right: 5px; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #667085; font-size: 18px; line-height: 1; cursor: pointer; transform: translateY(-50%); }
+.product-sku-finder-clear:hover { background: #f2f4f7; color: #b42318; }
+.product-sku-finder-results { position: absolute; top: calc(100% + 5px); left: 0; z-index: 30; width: min(660px, calc(100vw - 40px)); max-height: 360px; overflow: auto; padding: 6px; border: 1px solid #d0d5dd; border-radius: 9px; background: #fff; box-shadow: 0 14px 34px rgba(16, 24, 40, .18); }
+.product-sku-finder-group > strong { display: block; padding: 8px 9px 5px; color: #667085; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.product-sku-finder-group + .product-sku-finder-group { margin-top: 5px; border-top: 1px solid #eaecf0; }
+.product-sku-finder-results button { width: 100%; padding: 8px 9px; display: grid; grid-template-columns: minmax(120px, .7fr) minmax(180px, 1.3fr); gap: 3px 10px; border: 0; border-radius: 6px; background: transparent; color: #344054; text-align: left; cursor: pointer; }
+.product-sku-finder-results button:hover, .product-sku-finder-results button:focus-visible { background: #f3f6fc; outline: none; }
+.product-sku-finder-code, .product-sku-finder-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.product-sku-finder-code { font-weight: 700; }
+.product-sku-finder-results small { grid-column: 1 / -1; color: #667085; font-size: 10px; }
+.product-sku-finder-state { padding: 18px 10px; color: #667085; text-align: center; font-size: 11px; }
+.product-sku-finder-state.error { color: #b42318; }
+@media (max-width: 720px) {
+  .product-sku-finder-results { width: min(100%, calc(100vw - 30px)); }
+  .product-sku-finder-results button { grid-template-columns: 1fr; }
+  .product-sku-finder-results small { grid-column: 1; }
+}

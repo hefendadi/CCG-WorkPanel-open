@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>业务总览 · CCGtools-open</title>
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+  <link rel="stylesheet" href="/static/overview.css">
+</head>
+<body>
+  <div id="portal" data-ccg-shell-content hidden>
+    <header class="ccg-page-header">
+      <div><h1>业务总览 <small>Overview</small></h1><p>数据状态、待处理事项与当前已发布销售实绩。</p></div>
+      <div class="ccg-page-actions">
+        <div class="ccg-density-toggle" role="group" aria-label="显示密度">
+          <button class="ccg-density-option" type="button" data-action="ui-density" data-density-value="comfortable">舒适</button>
+          <button class="ccg-density-option" type="button" data-action="ui-density" data-density-value="compact">紧凑</button>
+        </div>
+        <button id="overview-refresh" class="ccg-button ccg-button-secondary" type="button">刷新状态</button>
+      </div>
+    </header>
+    <section class="overview-section" aria-labelledby="data-status-title">
+      <h2 class="overview-title" id="data-status-title">数据状态</h2>
+      <div class="status-strip">
+        <div class="status-cell"><h3>销售实绩已发布快照</h3><div id="sales-status" role="status" aria-live="polite">正在加载…</div></div>
+        <div class="status-cell"><h3>主数据</h3><div id="mdm-status" role="status" aria-live="polite">正在加载…</div></div>
+        <div class="status-cell"><h3>主数据导入</h3><div id="import-status" role="status" aria-live="polite">正在加载…</div></div>
+      </div>
+    </section>
+    <section class="overview-section ccg-panel" aria-labelledby="attention-title">
+      <div class="ccg-panel-header"><h2 id="attention-title">待处理事项</h2><span class="overview-meta">各流程最近 5 个批次 · 按可见权限展示</span></div>
+      <div id="attention" role="status" aria-live="polite">正在加载…</div>
+    </section>
+    <section class="overview-section" aria-labelledby="current-sales-title">
+      <div class="overview-title-row"><h2 class="overview-title" id="current-sales-title">当前销售实绩 <small>Pcs</small></h2><a id="sales-report-link" class="ccg-button ccg-button-secondary" href="/sales/actual" hidden>查看销售实绩 →</a></div>
+      <div id="sales-state" class="overview-empty" role="status" aria-live="polite">正在加载已发布销售实绩…</div>
+      <div id="sales-content" hidden>
+        <div class="sales-summary-bar">
+          <div><span>当月累计数量 (Pcs)</span><strong id="sales-qty">—</strong></div>
+          <div><span>销售月份</span><strong id="sales-month">—</strong></div>
+          <div><span>数据截至</span><strong id="sales-date">—</strong></div>
+          <div><span>商品 / SKU 数</span><strong id="sales-entities">—</strong></div>
+        </div>
+        <div class="sales-two-col">
+          <div class="ccg-panel"><div class="ccg-panel-header"><h3>商品实绩数量</h3><span class="overview-meta">数量降序 · 前 5 项</span></div><div class="overview-table-scroll"><table id="overview-products" class="ccg-table"></table></div></div>
+          <div class="ccg-panel"><div class="ccg-panel-header"><h3>渠道 × 商品实绩数量</h3><span class="overview-meta">数量降序 · 前 5 项</span></div><div class="overview-table-scroll"><table id="overview-channels" class="ccg-table"></table></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="/static/js/common.js"></script>
+  <script src="/static/ccg-design-system/shell.js"></script>
+  <script src="/static/js/overview.js"></script>
+</body>
+</html>

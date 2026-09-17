@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>订货工作台</title><link rel="stylesheet" href="/static/ordering.css">
+<link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+<link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+<link rel="stylesheet" href="/static/ccg-design-system/components.css">
+<link rel="stylesheet" href="/static/ccg-design-system/utilities.css"></head>
+<body>
+<span id="user" class="ccg-shell-hooks" aria-hidden="true"></span>
+<main data-ccg-shell-content>
+  <section id="cycles" hidden>
+    <p class="eyebrow">订货会议</p><h1>订货周期</h1>
+    <p class="muted">手动创建周期，从指定月份开始滚动预测四个月。</p>
+    <form id="create"><label>周期名称 <input name="name" maxlength="40" placeholder="可选"></label>
+      <label>销售预测起始月份 <input name="month" type="month" required></label><button>创建订货周期</button></form>
+    <div id="cycle-list"></div>
+  </section>
+  <section id="workbench" hidden>
+    <div class="heading"><div><p class="eyebrow">产品订货判断</p><h1 id="title"></h1><p id="period" class="muted"></p></div>
+      <div class="actions"><span id="status" class="badge"></span><button id="sources-button" class="secondary">选择已有来源</button></div></div>
+    <div id="source-state" class="cards"></div>
+    <div id="baseline" class="notice"></div><div id="gaps" class="notice" hidden></div>
+    <div class="toolbar"><div><strong id="draft-state" role="status">已保存</strong><p class="muted">展开产品查看 SKU 在库状态、批次消耗并编辑 渠道。空白保留未填写；所有渠道填写后才计算该月合计。无需求请明确填 0。</p></div>
+      <button id="save" disabled>保存销售预测</button></div>
+    <p class="formula">预计期末库存 = 上月期末库存 + 本月在途来货 − 本月销售预测。最终订货量独立展示，不参与推演。</p>
+    <div class="table-scroll" tabindex="0" aria-label="产品四个月滚动预测表"><table id="grid"></table></div>
+    <p class="muted">未排期与逾期在途不参与月度推演；超出四个月窗口的在途来货不分配到窗口内。</p>
+  </section>
+  <p id="message" role="alert"></p>
+</main>
+<dialog id="source-dialog"><form id="source-form"><h2>选择本周期使用的已有来源</h2>
+  <p class="muted">选择版本与使用月份范围。未选择的来源显示缺少数据，不自动采用最新版本。</p>
+  <div id="dataset-options"></div>
+  <label>在途来货快照 <select id="incoming-select"></select></label>
+  <label>销售预测版本 <select id="forecast-select"></select></label>
+  <p id="source-error" role="alert"></p><div class="actions"><button type="button" class="secondary" id="cancel-sources">取消</button><button>采用所选来源</button></div>
+</form></dialog>
+<script src="/static/js/common.js"></script><script src="/static/ccg-design-system/shell.js"></script><script src="/static/js/ordering-calculation.js"></script><script src="/static/js/ordering.js"></script>
+</body></html>

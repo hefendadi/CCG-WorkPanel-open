@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>登录 · CCGtools-open</title>
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+  <link rel="stylesheet" href="/static/login.css">
+</head>
+<body>
+  <header class="login-top-bar"><div class="top-brand-mini"><span class="ccg-brand-mark" aria-hidden="true">C</span><span>CCGtools-open</span></div></header>
+  <main class="login-main">
+    <div class="login-card" id="login-view">
+      <div class="login-header">
+        <div class="login-brand"><span class="brand-mark-lg" aria-hidden="true">C</span><span class="brand-text-lg">CCGtools-open</span></div>
+        <h1 class="login-title">账号登录</h1>
+        <p class="login-subtitle">请使用管理员分配的账号登录</p>
+      </div>
+      <div class="login-error-alert" id="login-msg" role="alert" aria-live="polite"></div>
+      <form class="login-form" onsubmit="doLogin(event)">
+        <div class="form-item"><label class="form-label" for="login-user">用户名</label><input class="input-login" id="login-user" placeholder="用户名" autocomplete="username" required autofocus></div>
+        <div class="form-item"><label class="form-label" for="login-pass">密码</label><input class="input-login" id="login-pass" type="password" placeholder="密码" autocomplete="current-password" required></div>
+        <button class="ccg-button ccg-button-primary btn-login-submit" type="submit">登 录</button>
+      </form>
+    </div>
+  </main>
+  <footer class="login-footer">CCGtools-open</footer>
+  <script src="/static/js/common.js"></script>
+  <script src="/static/js/login.js"></script>
+</body>
+</html>

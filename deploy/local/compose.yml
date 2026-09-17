@@ -1,0 +1,82 @@
+name: ccgtools-open-demo
+
+x-public-app: &public-app
+  image: ${CCGTOOLS_DEMO_IMAGE:-ccgtools-open:staging}
+  build:
+    context: ../..
+    dockerfile: deploy/local/Dockerfile
+
+x-demo-env: &demo-env
+  MDM_DATABASE_URL: mysql+pymysql://demo_app:demo-app-local-only@mysql/ccg_public_demo?charset=utf8mb4
+  CCGTOOLS_ACCOUNT_DB_PATH: /app/webapp/data/app.db
+  CCGTOOLS_DEMO_MODE: 'true'
+  CCGTOOLS_PORTAL_COOKIE_SECURE: ${CCGTOOLS_PORTAL_COOKIE_SECURE:-false}
+  CCGTOOLS_SALES_DROP_THRESHOLD: ${CCGTOOLS_SALES_DROP_THRESHOLD:-0.8}
+  CCGTOOLS_TRIGGER_DEFINER: demo_migrate@%
+
+services:
+  mysql:
+    image: mysql:8.0.46
+    ports: ["127.0.0.1:13306:3306"]
+    command: ['--log-bin-trust-function-creators=1']
+    environment:
+      MYSQL_ROOT_PASSWORD: demo-root-local-only
+      MYSQL_DATABASE: ccg_public_demo
+      MYSQL_USER: demo_app
+      MYSQL_PASSWORD: demo-app-local-only
+    volumes:
+      - mysql_demo:/var/lib/mysql
+      - ./init-demo.sql:/docker-entrypoint-initdb.d/01-demo.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent']
+      interval: 2s
+      timeout: 3s
+      retries: 45
+
+  migrate:
+    <<: *public-app
+    environment:
+      <<: *demo-env
+      MDM_DATABASE_URL: mysql+pymysql://demo_migrate:demo-migrate-local-only@mysql/ccg_public_demo?charset=utf8mb4
+    depends_on:
+      mysql: {condition: service_healthy}
+    command: ['python', '-m', 'alembic', '-c', 'webapp/mdm/alembic.ini', 'upgrade', 'head']
+    restart: 'no'
+
+  seed:
+    <<: *public-app
+    environment: *demo-env
+    volumes: ['accounts_demo:/app/webapp/data']
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    command: ['python', '-m', 'demo.seed']
+    restart: 'no'
+
+  app:
+    <<: *public-app
+    environment: *demo-env
+    volumes: ['accounts_demo:/app/webapp/data']
+    ports: ['127.0.0.1:${CCGTOOLS_DEMO_PORT:-18080}:8000']
+    depends_on:
+      seed: {condition: service_completed_successfully}
+    healthcheck:
+      test: ['CMD', 'python', '-c', "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: 'no'
+
+  tests:
+    <<: *public-app
+    profiles: ['test']
+    environment:
+      <<: *demo-env
+      MDM_DATABASE_URL: mysql+pymysql://demo_migrate:demo-migrate-local-only@mysql/ccg_public_demo?charset=utf8mb4
+    volumes: ['accounts_demo:/app/webapp/data']
+    depends_on:
+      app: {condition: service_healthy}
+    command: ['python', '-m', 'unittest', 'discover', '-s', 'webapp/tests', '-v']
+
+volumes:
+  mysql_demo:
+  accounts_demo:

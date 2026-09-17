@@ -1,0 +1,11 @@
+{
+  "synthetic": true,
+  "generated_from": "fictional constants",
+  "customers": [
+    "CUST-DEMO-001",
+    "CUST-DEMO-002"
+  ],
+  "skus": [
+    "SKU-DEMO-001"
+  ]
+}

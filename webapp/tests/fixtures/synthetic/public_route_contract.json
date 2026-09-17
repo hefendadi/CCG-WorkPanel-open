@@ -1,0 +1,894 @@
+[
+  {
+    "path": "/",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/admin/users",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/users",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/users",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/users/{user_id}",
+    "methods": [
+      "PUT"
+    ]
+  },
+  {
+    "path": "/api/admin/users/{user_id}/reset-password",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/auth/change-password",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/auth/login",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/auth/logout",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/auth/me",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/health",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/channels",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/channels",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/channels/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/channels/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/channels/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/channels/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/batches",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/batches",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/batches/{batch_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/batches/{batch_id}/acknowledge",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/batches/{batch_id}/commit",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customer-import/template",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customers",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customers",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customers/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customers/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customers/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/customers/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/batches",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/batches",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/batches/{batch_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/batches/{batch_id}/acknowledge",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/batches/{batch_id}/commit",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/goods-import/template",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/import-batches/{batch_id}/acknowledgements",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/import-batches/{batch_id}/cancel",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/import-batches/{batch_id}/commit",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/import-batches/{batch_id}/confirm",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/import-batches/{batch_id}/resolutions",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/import-batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/batches",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/batches",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/batches/{batch_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/batches/{batch_id}/acknowledge",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/batches/{batch_id}/commit",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/product-import/template",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/products/{stable_id}/skus",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/provinces",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/provinces",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/provinces/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/provinces/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/provinces/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/provinces/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/regions",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/regions",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/regions/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/regions/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/regions/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/regions/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/salesreps",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/salesreps",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/salesreps/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/salesreps/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/salesreps/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/salesreps/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/batches",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/batches",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/batches/{batch_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/batches/{batch_id}/acknowledge",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/batches/{batch_id}/commit",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/sku-import/template",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus/filter-options",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus/{stable_id}",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus/{stable_id}/activate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus/{stable_id}/deactivate",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/mdm/skus/{stable_id}/reassign-product",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/ordering/cycles",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/ordering/cycles",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/ordering/cycles/{cycle_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/ordering/cycles/{cycle_id}/forecast",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/ordering/cycles/{cycle_id}/source-options",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/ordering/cycles/{cycle_id}/sources",
+    "methods": [
+      "PUT"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/channel-products",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/context",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/filter-options",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/products",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/products/{product_id}/skus",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/salesrep-products",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/dashboard/summary",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches/{batch_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches/{batch_id}/aggregates/{dimension}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches/{batch_id}/preview",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches/{batch_id}/publish",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/import-batches/{batch_id}/rows",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/docs",
+    "methods": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  {
+    "path": "/docs/oauth2-redirect",
+    "methods": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  {
+    "path": "/login",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/customers",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/customers/new",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/customers/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/goods-import-center",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/goods-import-center/batches/{batch_id}/commit",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/goods-import-center/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/goods-import-center/upload",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/import-center",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/import-center/batches/{batch_id}/commit",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/import-center/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/import-center/upload",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/product-import-center",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/product-import-center/batches/{batch_id}/commit",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/product-import-center/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/product-import-center/upload",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/products",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/products/new",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/products/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/references/{resource}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/references/{resource}/new",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/references/{resource}/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/sku-import-center",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/sku-import-center/batches/{batch_id}/commit",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/sku-import-center/batches/{batch_id}/review",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/sku-import-center/upload",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/skus",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/mdm/skus/{stable_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/openapi.json",
+    "methods": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  {
+    "path": "/ordering",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/ordering/cycles/{cycle_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/redoc",
+    "methods": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  {
+    "path": "/sales/actual",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/sales/actual/import",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/sales/actual/import-batches/{batch_id}/preview",
+    "methods": [
+      "GET"
+    ]
+  }
+]
