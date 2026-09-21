@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>销售实绩 · 轻量分析</title>
+  <link rel="stylesheet" href="/static/sales-analytics.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+</head>
+<body>
+<main class="sales-analytics-page" data-ccg-shell-content>
+  <nav class="ccg-local-tabs" aria-label="销售实绩"><a class="ccg-local-tab" href="/sales/actual" data-nav="dashboard">销售分析</a><a class="ccg-local-tab active" href="/sales/actual/analytics" data-nav="analytics" aria-current="page">轻量分析</a><a class="ccg-local-tab" href="/sales/actual/workbench" data-nav="workbench">分析工作台</a><a class="ccg-local-tab" href="/sales/actual/import" data-nav="import">数据维护</a></nav>
+  <span id="user" class="ccg-shell-hooks" aria-hidden="true"></span>
+
+  <header class="ccg-page-header sales-analytics-header">
+    <div><h1>销售实绩 · 轻量分析</h1><p id="snapshot-note">正在读取当前已发布快照…</p></div>
+  </header>
+
+  <section class="ccg-filter-bar sales-analytics-filter-bar" aria-label="全局筛选">
+    <label class="ccg-filter-field"><span class="ccg-filter-label">时间（从）</span><input id="filter-from" class="ccg-input" type="date"></label>
+    <label class="ccg-filter-field"><span class="ccg-filter-label">时间（到）</span><input id="filter-to" class="ccg-input" type="date"></label>
+    <label class="ccg-filter-field"><span class="ccg-filter-label">商品</span><select id="filter-product" class="ccg-select"><option value="">全部商品</option></select></label>
+    <label class="ccg-filter-field"><span class="ccg-filter-label">BP渠道</span><select id="filter-channel" class="ccg-select"><option value="">全部 BP渠道</option></select></label>
+    <label class="ccg-filter-field"><span class="ccg-filter-label">营业员</span><select id="filter-salesrep" class="ccg-select"><option value="">全部营业员</option></select></label>
+    <button id="clear-filters" class="ccg-button ccg-button-secondary" type="button">重置筛选</button>
+  </section>
+
+  <div id="page-state" class="ccg-state ccg-state-loading sales-analytics-state" role="status" aria-live="polite">
+    <div id="state-icon" class="ccg-state-icon" aria-hidden="true">…</div>
+    <div class="ccg-state-copy"><h2 id="state-title">正在加载轻量分析</h2><p id="state-detail">正在读取当前已发布快照…</p></div>
+    <button id="page-retry" class="ccg-button ccg-button-secondary" type="button" hidden>重试</button>
+  </div>
+
+  <div id="analytics-content" hidden>
+    <section class="ccg-panel sales-analytics-panel" aria-labelledby="product-title">
+      <div class="ccg-panel-header"><div><h2 id="product-title">商品 × 实际销量</h2><p>点击任一商品行，查看该商品在各 BP渠道 的实际销量。</p></div></div>
+      <div class="ccg-table-scroll ccg-table-scroll-dashboard"><table id="product-table" class="ccg-table sales-analytics-table"></table></div>
+    </section>
+
+    <section class="ccg-panel sales-analytics-panel" aria-labelledby="channel-title">
+      <div class="ccg-panel-header"><div><h2 id="channel-title">BP渠道 × 实际销量</h2><p id="channel-subtitle">请先在上方表格选择一个商品。</p></div></div>
+      <div id="channel-bars" class="sales-analytics-bars" role="list"></div>
+      <div id="channel-empty" class="ccg-state ccg-state-empty sales-analytics-state" hidden>
+        <div class="ccg-state-icon" aria-hidden="true">0</div>
+        <div class="ccg-state-copy"><h2 id="channel-empty-title">尚未选择商品</h2><p>点击上方表格中的商品行，即可生成该商品的 BP渠道 实际销量横向条形。</p></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="message" class="ccg-state ccg-state-error sales-analytics-message" role="alert" hidden>
+    <div class="ccg-state-icon" aria-hidden="true">!</div>
+    <div class="ccg-state-copy"><h2>操作未完成</h2><p id="message-copy"></p></div>
+    <button id="message-dismiss" class="ccg-button ccg-button-secondary" type="button">关闭</button>
+  </div>
+</main>
+<script src="/static/js/common.js"></script><script src="/static/ccg-design-system/shell.js"></script><script src="/static/js/sales-dashboard-format.js"></script><script src="/static/js/sales-analytics.js"></script>
+</body></html>

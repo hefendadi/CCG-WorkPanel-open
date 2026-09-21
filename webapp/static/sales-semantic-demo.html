@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ACT Sales Semantic Layer Lab</title>
+  <!-- Same shared stylesheet set the existing Sales Actual page loads: the
+       ccg-button / ccg-select / ccg-page-header classes live in overview.css and
+       sales-actual.css, not in the design-system bundle. -->
+  <link rel="stylesheet" href="/static/overview.css">
+  <link rel="stylesheet" href="/static/sales-actual.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+  <style>
+    .sem-page { padding: 16px; max-width: 1400px; margin: 0 auto; }
+    .sem-banner { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 6px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; }
+    .sem-tabs { display: flex; gap: 8px; margin: 12px 0 16px; border-bottom: 1px solid #e2e8f0; }
+    .sem-tab { padding: 8px 14px; border: 0; background: none; cursor: pointer; font-size: 14px; border-bottom: 2px solid transparent; }
+    .sem-tab.active { border-bottom-color: #2563eb; color: #2563eb; font-weight: 700; }
+    .sem-layout { display: grid; grid-template-columns: 300px 1fr; gap: 16px; align-items: start; }
+    @media (max-width: 980px) { .sem-layout { grid-template-columns: 1fr; } }
+    .sem-panel { border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 14px; }
+    .sem-panel h2 { font-size: 14px; margin: 0 0 10px; }
+    .sem-field { margin-bottom: 12px; }
+    .sem-field > span { display: block; font-size: 12px; color: #475569; margin-bottom: 4px; font-weight: 600; }
+    .sem-checks { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+    .sem-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+    .sem-metrics { font-family: ui-monospace, monospace; font-size: 13px; }
+    .sem-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .sem-table th, .sem-table td { border-bottom: 1px solid #e2e8f0; padding: 6px 8px; text-align: left; }
+    .sem-table th { background: #f8fafc; position: sticky; top: 0; }
+    .sem-num { text-align: right; font-variant-numeric: tabular-nums; }
+    .sem-inspector { font-size: 12px; line-height: 1.7; }
+    .sem-inspector dt { color: #64748b; }
+    .sem-inspector dd { margin: 0 0 6px; font-weight: 600; }
+    .sem-scroll { max-height: 560px; overflow: auto; border: 1px solid #e2e8f0; border-radius: 6px; }
+    .sem-note { font-size: 12px; color: #64748b; margin-top: 8px; }
+    .sem-err { color: #b91c1c; font-size: 13px; margin-top: 8px; white-space: pre-line; }
+    .sem-flag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 4px; background: #fee2e2; color: #b91c1c; font-weight: 700; }
+    .sem-flag-sim { background: #ede9fe; color: #6d28d9; }
+    .sem-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 980px) { .sem-cols { grid-template-columns: 1fr; } }
+    pre.sem-code { background: #0f172a; color: #e2e8f0; padding: 12px; border-radius: 6px; font-size: 12px; overflow: auto; }
+    .sem-arch-row { font-family: ui-monospace, monospace; font-size: 12px; padding: 8px; border-left: 3px solid #cbd5e1; margin-bottom: 6px; background: #f8fafc; }
+    .sem-arrow { text-align: center; color: #2563eb; font-weight: 700; margin: 6px 0; }
+  </style>
+</head>
+<body>
+<main class="sem-page" data-ccg-shell-content>
+  <div class="sem-banner">
+    <strong>Architecture Spike / 隔离 Demo</strong> — Metric + Dimension + Filter 驱动的 ACT Sales Semantic Layer。
+    全部数据为 <strong>SYNTHETIC / DEMO</strong> 数据；页面只调用
+    <code>POST /api/v1/lab/sales/query</code> 一个执行入口，不调用任何原有专用 Dashboard API。
+  </div>
+
+  <header class="ccg-page-header">
+    <div>
+      <h1>ACT Sales Semantic Explorer</h1>
+      <p id="sem-subtitle">正在加载 semantic metadata…</p>
+    </div>
+    <div class="ccg-page-actions">
+      <span id="sem-batch" class="sem-metrics">batch: —</span>
+    </div>
+  </header>
+
+  <nav class="sem-tabs" aria-label="Semantic Lab 视图">
+    <button class="sem-tab active" type="button" data-sem-view="explorer">Explorer</button>
+    <button class="sem-tab" type="button" data-sem-view="architecture">Architecture</button>
+  </nav>
+
+  <!-- ================= Explorer ================= -->
+  <section id="sem-view-explorer">
+    <div class="sem-layout">
+      <aside class="sem-panel">
+        <h2>Metric</h2>
+        <div class="sem-field">
+          <select id="sem-metric" class="ccg-select" aria-label="Metric"></select>
+        </div>
+
+        <h2>Group By <span class="sem-note">(max 3)</span></h2>
+        <div class="sem-field">
+          <div id="sem-dimensions" class="sem-checks"></div>
+        </div>
+
+        <h2>Filters</h2>
+        <div id="sem-filters"></div>
+
+        <h2>Sort</h2>
+        <div class="sem-field">
+          <select id="sem-sort" class="ccg-select" aria-label="Sort">
+            <option value="actual_qty:desc">Sales Qty (降序)</option>
+            <option value="actual_qty:asc">Sales Qty (升序)</option>
+          </select>
+        </div>
+
+        <button id="sem-run" class="ccg-button ccg-button-primary" type="button">Run Query</button>
+        <div id="sem-error" class="sem-err" hidden></div>
+
+        <h2 style="margin-top:16px">Presets</h2>
+        <p class="sem-note">只切换 Metric / Dimension，然后调用同一个 query API。</p>
+        <div id="sem-presets" class="sem-presets"></div>
+      </aside>
+
+      <div>
+        <section class="sem-panel" style="margin-bottom:14px">
+          <h2>Query Inspector</h2>
+          <dl id="sem-inspector" class="sem-inspector"></dl>
+        </section>
+
+        <section class="sem-panel">
+          <h2 id="sem-result-title">Result</h2>
+          <div id="sem-result-meta" class="sem-note"></div>
+          <div class="sem-scroll">
+            <table class="sem-table" id="sem-table">
+              <thead id="sem-thead"></thead>
+              <tbody id="sem-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Architecture ================= -->
+  <section id="sem-view-architecture" hidden>
+    <div class="sem-cols">
+      <section class="sem-panel">
+        <h2>BEFORE — 每种视图一套专用实现</h2>
+        <div class="sem-arch-row">Channel × Product<br>&nbsp;&nbsp;→ get_channel_product()<br>&nbsp;&nbsp;→ dedicated endpoint /dashboard/channel-products<br>&nbsp;&nbsp;→ dedicated frontend rendering</div>
+        <div class="sem-arch-row">SalesRep × Product<br>&nbsp;&nbsp;→ get_salesrep_product()<br>&nbsp;&nbsp;→ dedicated endpoint /dashboard/salesrep-products<br>&nbsp;&nbsp;→ dedicated frontend rendering</div>
+        <div class="sem-arch-row">Product aggregation<br>&nbsp;&nbsp;→ get_product_aggregation()<br>&nbsp;&nbsp;→ dedicated endpoint /dashboard/products</div>
+        <div class="sem-arch-row">Product → SKU drilldown<br>&nbsp;&nbsp;→ get_product_sku_drilldown()<br>&nbsp;&nbsp;→ dedicated endpoint /dashboard/products/{id}/skus</div>
+        <p class="sem-note">新增一种分析视图 = 新增 service function + endpoint + filter/sort 映射 + 专用前端渲染。</p>
+      </section>
+
+      <section class="sem-panel">
+        <h2>AFTER — 一个引擎，N 种组合</h2>
+        <div class="sem-arch-row">Metric: actual_qty<br>Dimensions: channel + product</div>
+        <div class="sem-arrow">↓</div>
+        <div class="sem-arch-row" style="border-left-color:#2563eb">Semantic Query Engine<br>(POST /api/v1/lab/sales/query)</div>
+        <div class="sem-arrow">↑</div>
+        <div class="sem-arch-row">Metric: actual_qty<br>Dimensions: salesrep + product</div>
+        <p class="sem-note">同一个引擎、同一个 endpoint、同一套前端渲染；切换 Dimension 即得到新视图，无新增代码。</p>
+      </section>
+    </div>
+
+    <section class="sem-panel" style="margin-top:14px">
+      <h2>Runtime plan (开发评审用)</h2>
+      <p class="sem-note">运行一次 query 后，这里显示引擎解析出的逻辑计划；普通 Explorer 视图不显示 SQL。</p>
+      <pre class="sem-code" id="sem-plan">Run a query to inspect the plan.</pre>
+    </section>
+
+    <section class="sem-panel" style="margin-top:14px">
+      <h2>Future Dimensions — Category</h2>
+      <p class="sem-note">
+        用户未来非常关心 <strong>Category × BP Channel</strong>，但当前 SalesFact <strong>没有 Category snapshot</strong>。
+        本 Demo <strong>不会</strong> 用 “SalesFact JOIN 当前 MDM → Category” 的方式伪造历史归属。
+      </p>
+      <table class="sem-table">
+        <thead><tr><th>Dimension</th><th>Status</th><th>说明</th></tr></thead>
+        <tbody id="sem-future-dims"></tbody>
+      </table>
+      <div class="sem-note" style="margin-top:12px">
+        <strong>Option A</strong> — 销售 Publish 时冻结 Category snapshot（历史可复现，需新增 snapshot 列与 Publish 契约）。<br>
+        <strong>Option B</strong> — 历史销售永远按当前 MDM 重新分类（实现便宜，但历史报表会随 MDM 变更而漂移）。<br>
+        Demo 不替用户决定；在决策前 Category 维度不进入正式 Semantic Query Engine。
+      </div>
+      <div id="sem-simulated" class="sem-panel" style="margin-top:12px;background:#faf5ff;border-color:#ddd6fe">
+        <h2>SIMULATED preview <span class="sem-flag sem-flag-sim">SIMULATED</span></h2>
+        <p class="sem-note">
+          以下数字由前端 <strong>纯本地模拟</strong> 生成，用于展示“如果 Category 可用会长什么样”。
+          它不来自 Semantic Query Engine，也不来自任何真实数据，仅用于视觉说明。
+        </p>
+        <table class="sem-table">
+          <thead><tr><th>Category L1</th><th>Channel</th><th class="sem-num">Sales Qty (SIMULATED)</th></tr></thead>
+          <tbody id="sem-sim-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <span id="user" class="ccg-shell-hooks" aria-hidden="true"></span>
+</main>
+<script src="/static/js/common.js"></script>
+<script src="/static/ccg-design-system/shell.js"></script>
+<script src="/static/js/sales-semantic-demo.js"></script>
+</body>
+</html>

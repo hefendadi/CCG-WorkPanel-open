@@ -1,0 +1,223 @@
+/* Sales Pivot Workbench (PIVOT-UX-DEMO-V2 / CR02).
+   Plain CSS only: no charting library, no Tree Grid dependency. */
+
+.sales-pivot-page { display: flex; flex-direction: column; gap: 16px; }
+
+.sales-pivot-notice {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--ccg-surface-muted, #eef1f5);
+  border-left: 3px solid var(--ccg-accent, #2f6fed);
+  font-size: 13px;
+  color: var(--ccg-text-muted, #4a5568);
+}
+
+.sales-pivot-state { margin: 8px 0; }
+
+.sales-pivot-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+/* Left: configuration column.  Right: result canvas that stays on the first
+   screen while the configuration scrolls. */
+.sales-pivot-config { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.sales-pivot-canvas { min-width: 0; position: sticky; top: 12px; }
+.sales-pivot-catalog .sales-pivot-field-groups { max-height: 260px; overflow: auto; }
+
+.sales-pivot-field-groups { display: flex; flex-direction: column; gap: 14px; padding: 12px 16px 18px; }
+
+.sales-pivot-group-title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ccg-text-muted, #6b7280);
+}
+
+.sales-pivot-field-list { display: flex; flex-direction: column; gap: 4px; }
+
+.sales-pivot-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sales-pivot-field:hover { background: var(--ccg-surface-muted, #eef1f5); }
+.sales-pivot-field.is-picked { border-color: var(--ccg-accent, #2f6fed); }
+
+.sales-pivot-field-badge {
+  flex: none;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--ccg-warning-soft, #fdf3d7);
+  color: var(--ccg-warning-text, #8a6100);
+}
+
+.sales-pivot-dim-list { list-style: none; margin: 0; padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 6px; }
+
+.sales-pivot-dim {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--ccg-border, #dfe3e8);
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.sales-pivot-dim-order {
+  font-variant-numeric: tabular-nums;
+  color: var(--ccg-text-muted, #6b7280);
+}
+
+.sales-pivot-dim-actions { display: flex; gap: 4px; }
+
+.sales-pivot-icon-button {
+  border: 1px solid var(--ccg-border, #dfe3e8);
+  background: transparent;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.sales-pivot-icon-button[disabled] { opacity: 0.4; cursor: default; }
+
+.sales-pivot-metric { display: flex; align-items: center; gap: 8px; padding: 4px 16px 16px; font-size: 13px; }
+
+.sales-pivot-filter-actions { display: flex; gap: 8px; padding: 0 16px 10px; flex-wrap: wrap; }
+.sales-pivot-filter-rows { display: flex; flex-direction: column; gap: 8px; padding: 0 16px 16px; }
+
+.sales-pivot-filter {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) 1fr auto;
+  align-items: start;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--ccg-border, #dfe3e8);
+  border-radius: 6px;
+}
+
+.sales-pivot-filter-field { font-size: 13px; font-weight: 600; padding-top: 4px; }
+.sales-pivot-filter-values { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.sales-pivot-filter select[multiple] { min-width: 200px; }
+.sales-pivot-filter input[type="date"] { max-width: 160px; }
+
+.sales-pivot-display { display: flex; gap: 18px; padding: 0 16px 10px; font-size: 13px; }
+.sales-pivot-run { margin: 0 16px 16px; }
+.sales-pivot-hint { margin: 0; padding: 0 16px 12px; font-size: 12px; color: var(--ccg-text-muted, #6b7280); }
+
+.sales-pivot-table tbody tr:hover { background: var(--ccg-surface-muted, #eef1f5); }
+.sales-pivot-table td.number { text-align: right; font-variant-numeric: tabular-nums; }
+.sales-pivot-table th.number { text-align: right; }
+
+.sales-pivot-bars { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px 20px; }
+.sales-pivot-bar-row { display: grid; grid-template-columns: minmax(120px, 220px) 1fr minmax(96px, 150px); align-items: center; gap: 12px; }
+.sales-pivot-bar-label { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sales-pivot-bar-track { background: var(--ccg-surface-muted, #eef1f5); border-radius: 6px; height: 18px; overflow: hidden; }
+.sales-pivot-bar-fill { height: 100%; min-width: 2px; border-radius: 6px; background: var(--ccg-accent, #2f6fed); }
+.sales-pivot-bar-value { font-variant-numeric: tabular-nums; text-align: right; font-size: 13px; }
+.sales-pivot-bar-row.is-unassigned .sales-pivot-bar-fill { background: var(--ccg-neutral, #97a3b4); }
+
+@media (max-width: 1100px) {
+  .sales-pivot-layout { grid-template-columns: 1fr; }
+  .sales-pivot-canvas { position: static; }
+  .sales-pivot-catalog .sales-pivot-field-groups { max-height: none; }
+}
+
+/* ---------------------------------------------------------------- CR02 */
+
+.sales-pivot-preset-buttons { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 8px; }
+
+.sales-pivot-preset-notice {
+  background: var(--ccg-warning-soft, #fdf3d7);
+  color: var(--ccg-warning-text, #8a6100);
+  border-radius: 6px;
+  margin: 0 16px 12px;
+  padding: 8px 10px;
+}
+
+.sales-pivot-dim { grid-template-columns: 28px minmax(0, 1fr) auto auto; }
+
+.sales-pivot-dim-subtotal {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ccg-text-muted, #6b7280);
+  white-space: nowrap;
+}
+
+.sales-pivot-time-custom { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 16px 10px; }
+
+/* Excel-pivot style hierarchy: parent values are shown once, children are
+   indented, 小计 / 合计 rows are visually distinct but restrained. */
+.sales-pivot-row.is-group td { font-weight: 600; }
+.sales-pivot-row.is-group .sales-pivot-metric-cell { font-weight: 500; color: var(--ccg-text-muted, #6b7280); }
+.sales-pivot-row.is-leaf td { font-weight: 400; }
+.sales-pivot-row.is-subtotal td {
+  font-weight: 600;
+  background: var(--ccg-surface-muted, #eef1f5);
+  border-top: 1px solid var(--ccg-border, #dfe3e8);
+}
+.sales-pivot-row.is-total td {
+  font-weight: 700;
+  background: var(--ccg-accent-soft, #e8f0fe);
+  border-top: 2px solid var(--ccg-accent, #2f6fed);
+}
+.sales-pivot-total-label { font-weight: 700; }
+.sales-pivot-metric-cell { font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------- CR02A: filter popover */
+
+.sales-pivot-ms { position: relative; min-width: 220px; }
+
+.sales-pivot-ms-trigger {
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border: 1px solid var(--ccg-border, #dfe3e8);
+  border-radius: 6px;
+  background: var(--ccg-surface, #fff);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.sales-pivot-ms-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 280px;
+  padding: 8px;
+  border: 1px solid var(--ccg-border, #dfe3e8);
+  border-radius: 8px;
+  background: var(--ccg-surface, #fff);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+}
+
+.sales-pivot-ms-search { width: 100%; margin-bottom: 6px; }
+.sales-pivot-ms-actions { display: flex; gap: 8px; margin-bottom: 6px; }
+.sales-pivot-ms-list { max-height: 220px; overflow: auto; display: flex; flex-direction: column; }
+.sales-pivot-ms-option { display: flex; align-items: center; gap: 6px; padding: 3px 4px; font-size: 13px; }
+.sales-pivot-ms-empty { padding: 4px; font-size: 12px; color: var(--ccg-text-muted, #6b7280); }
+
+/* CR02A tabular form: the 小计 / 合计 labels span the dimension columns. */
+.sales-pivot-row.is-subtotal .sales-pivot-span { font-weight: 600; }
+.sales-pivot-row.is-total .sales-pivot-span { font-weight: 700; }

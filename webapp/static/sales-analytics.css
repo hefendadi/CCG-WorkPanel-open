@@ -1,0 +1,62 @@
+/* Actual Sales V2 — lightweight analytics (TASK-ASV2-001).
+   The horizontal bar is plain CSS: no charting dependency is added. */
+
+.sales-analytics-page { display: flex; flex-direction: column; gap: 16px; }
+
+.sales-analytics-filter-bar { flex-wrap: wrap; }
+
+.sales-analytics-state { margin: 8px 0; }
+
+.sales-analytics-panel { display: flex; flex-direction: column; }
+
+.sales-analytics-table tbody tr { cursor: pointer; }
+
+.sales-analytics-table tbody tr.is-selected { background: var(--ccg-accent-soft, #e8f0fe); }
+
+.sales-analytics-table tbody tr.is-selected td:first-child { font-weight: 600; }
+
+.sales-analytics-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px 20px;
+}
+
+.sales-analytics-bar-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 220px) 1fr minmax(96px, 150px);
+  align-items: center;
+  gap: 12px;
+}
+
+.sales-analytics-bar-label {
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sales-analytics-bar-track {
+  background: var(--ccg-surface-muted, #eef1f5);
+  border-radius: 6px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.sales-analytics-bar-fill {
+  height: 100%;
+  min-width: 2px;
+  border-radius: 6px;
+  background: var(--ccg-accent, #2f6fed);
+  transition: width 160ms ease-out;
+}
+
+.sales-analytics-bar-value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-size: 13px;
+}
+
+.sales-analytics-bar-row.is-unassigned .sales-analytics-bar-fill {
+  background: var(--ccg-neutral, #97a3b4);
+}

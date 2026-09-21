@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>销售实绩 · 分析工作台</title>
+  <link rel="stylesheet" href="/static/sales-pivot.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/tokens.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/shell.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/components.css">
+  <link rel="stylesheet" href="/static/ccg-design-system/utilities.css">
+</head>
+<body>
+<main class="sales-pivot-page" data-ccg-shell-content>
+  <nav class="ccg-local-tabs" aria-label="销售实绩"><a class="ccg-local-tab" href="/sales/actual" data-nav="dashboard">销售分析</a><a class="ccg-local-tab" href="/sales/actual/analytics" data-nav="analytics">轻量分析</a><a class="ccg-local-tab active" href="/sales/actual/workbench" data-nav="workbench" aria-current="page">分析工作台</a><a class="ccg-local-tab" href="/sales/actual/import" data-nav="import">数据维护</a></nav>
+  <span id="user" class="ccg-shell-hooks" aria-hidden="true"></span>
+
+  <header class="ccg-page-header sales-pivot-header">
+    <div><h1>销售分析工作台</h1><p id="snapshot-note">正在读取当前已发布快照…</p></div>
+  </header>
+
+  <p id="mdm-notice" class="sales-pivot-notice">Pivot UX Demo：主档属性按当前本地 MDM 解释，不代表历史冻结口径。</p>
+
+  <div id="page-state" class="ccg-state ccg-state-loading sales-pivot-state" role="status" aria-live="polite">
+    <div id="state-icon" class="ccg-state-icon" aria-hidden="true">…</div>
+    <div class="ccg-state-copy"><h2 id="state-title">正在加载分析字段</h2><p id="state-detail">正在读取当前已发布快照…</p></div>
+    <button id="page-retry" class="ccg-button ccg-button-secondary" type="button" hidden>重试</button>
+  </div>
+
+  <div id="workbench" class="sales-pivot-layout" hidden>
+    <section class="sales-pivot-config" aria-label="配置区">
+      <div class="ccg-panel">
+        <div class="ccg-panel-header"><div><h2>报表模板</h2><p>模板只预填配置（维度 / 筛选 / 小计 / 总计 / 时间口径），之后仍可自由修改。</p></div></div>
+        <div id="preset-buttons" class="sales-pivot-preset-buttons"></div>
+        <p id="preset-blocked" class="sales-pivot-hint sales-pivot-preset-notice" hidden></p>
+        <p id="preset-notice" class="sales-pivot-hint sales-pivot-preset-notice" hidden></p>
+      </div>
+
+      <div class="ccg-panel sales-pivot-catalog" aria-labelledby="catalog-title">
+        <div class="ccg-panel-header"><div><h2 id="catalog-title">分析字段</h2><p>点击字段加入分析维度；顺序即分组层级。</p></div></div>
+        <div id="field-groups" class="sales-pivot-field-groups"></div>
+      </div>
+
+      <div class="ccg-panel">
+        <div class="ccg-panel-header"><div><h2>分析维度</h2><p>最多 4 个；可对任意层级开启小计。</p></div></div>
+        <ol id="picked-list" class="sales-pivot-dim-list"></ol>
+        <p id="picked-empty" class="sales-pivot-hint">尚未选择分析维度：按当前筛选条件显示合计。</p>
+      </div>
+
+      <div class="ccg-panel">
+        <div class="ccg-panel-header"><div><h2>指标</h2></div></div>
+        <label class="sales-pivot-metric"><input id="metric-actual-sales" type="checkbox" checked disabled> <span id="metric-label">实际销量</span>（第一版固定）</label>
+        <label class="sales-pivot-metric"><input id="grand-total-toggle" type="checkbox" checked> 显示总计（合计行）</label>
+      </div>
+
+      <div class="ccg-panel">
+        <div class="ccg-panel-header"><div><h2>时间口径</h2><p>业务日期口径，不使用创建时间。</p></div></div>
+        <div class="sales-pivot-display">
+          <label><input type="radio" name="sales-pivot-time" value="all" checked> 全部时间</label>
+          <label><input type="radio" name="sales-pivot-time" value="mtd"> MTD</label>
+          <label><input type="radio" name="sales-pivot-time" value="custom"> 自定义日期</label>
+        </div>
+        <div id="time-custom" class="sales-pivot-time-custom" hidden>
+          <label class="ccg-filter-field"><span class="ccg-filter-label">开始</span><input id="time-start" class="ccg-input" type="date"></label>
+          <label class="ccg-filter-field"><span class="ccg-filter-label">结束</span><input id="time-end" class="ccg-input" type="date"></label>
+        </div>
+        <p id="time-hint" class="sales-pivot-hint">MTD：最新可用快照月 1 日 → 该月最大业务日期。</p>
+      </div>
+
+      <div class="ccg-panel">
+        <div class="ccg-panel-header"><div><h2>筛选条件</h2><p>可添加任意可筛选字段；枚举字段用下拉勾选面板多选，时间字段用范围。</p></div></div>
+        <div class="sales-pivot-filter-actions">
+          <select id="filter-field-picker" class="ccg-select"><option value="">选择要筛选的字段…</option></select>
+          <button id="add-filter" class="ccg-button ccg-button-secondary" type="button">添加筛选</button>
+        </div>
+        <div id="filter-rows" class="sales-pivot-filter-rows"></div>
+        <p id="filter-empty" class="sales-pivot-hint">未设置筛选条件。</p>
+      </div>
+
+      <div class="ccg-panel sales-pivot-run-panel">
+        <div class="ccg-panel-header"><div><h2>展示方式</h2></div></div>
+        <div class="sales-pivot-display">
+          <label><input type="radio" name="sales-pivot-display" value="table" checked> 表格</label>
+          <label><input id="display-bar-option" type="radio" name="sales-pivot-display" value="bar"> 横向柱状图</label>
+        </div>
+        <p id="bar-hint" class="sales-pivot-hint" hidden>横向柱状图暂只支持一个分析维度，请使用表格。</p>
+        <button id="run-analysis" class="ccg-button ccg-button-primary sales-pivot-run" type="button">执行分析</button>
+      </div>
+    </section>
+
+    <section class="ccg-panel sales-pivot-result sales-pivot-canvas" aria-labelledby="result-title">
+      <div class="ccg-panel-header"><div><h2 id="result-title">分析结果</h2><p id="result-meta">尚未执行分析。</p></div></div>
+      <div id="result-empty" class="ccg-state ccg-state-empty sales-pivot-state">
+        <div class="ccg-state-icon" aria-hidden="true">0</div>
+        <div class="ccg-state-copy"><h3 id="result-empty-title">选择分析字段后执行分析</h3><p>结果表会随所选分析维度自动生成列。</p></div>
+      </div>
+      <div id="result-table-wrap" class="ccg-table-scroll ccg-table-scroll-dashboard" hidden><table id="result-table" class="ccg-table sales-pivot-table"></table></div>
+      <div id="result-bars" class="sales-pivot-bars" role="list" hidden></div>
+    </section>
+  </div>
+
+  <div id="message" class="ccg-state ccg-state-error sales-pivot-state sales-pivot-message" role="alert" hidden>
+    <div class="ccg-state-icon" aria-hidden="true">!</div>
+    <div class="ccg-state-copy"><h3>操作未完成</h3><p id="message-copy"></p></div>
+    <button id="message-dismiss" class="ccg-button ccg-button-secondary" type="button">关闭</button>
+  </div>
+</main>
+<script src="/static/js/common.js"></script><script src="/static/ccg-design-system/shell.js"></script><script src="/static/js/sales-dashboard-format.js"></script><script src="/static/js/sales-pivot.js"></script>
+</body></html>
