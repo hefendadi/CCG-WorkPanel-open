@@ -66,6 +66,24 @@
     ]
   },
   {
+    "path": "/api/v1/lab/sales/filter-options",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/lab/sales/query",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/lab/sales/semantic",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
     "path": "/api/v1/mdm/channels",
     "methods": [
       "GET"
@@ -576,6 +594,24 @@
     ]
   },
   {
+    "path": "/api/v1/sales/actual/analytics/filter-options",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/analytics/metadata",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/analytics/query",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/api/v1/sales/actual/dashboard/channel-products",
     "methods": [
       "GET"
@@ -660,6 +696,24 @@
     ]
   },
   {
+    "path": "/api/v1/sales/actual/pivot/fields",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/pivot/filter-options",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sales/actual/pivot/query",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/docs",
     "methods": [
       "GET",
@@ -671,6 +725,12 @@
     "methods": [
       "GET",
       "HEAD"
+    ]
+  },
+  {
+    "path": "/lab/sales-semantic-layer",
+    "methods": [
+      "GET"
     ]
   },
   {
@@ -880,6 +940,12 @@
     ]
   },
   {
+    "path": "/sales/actual/analytics",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
     "path": "/sales/actual/import",
     "methods": [
       "GET"
@@ -887,6 +953,12 @@
   },
   {
     "path": "/sales/actual/import-batches/{batch_id}/preview",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/sales/actual/workbench",
     "methods": [
       "GET"
     ]

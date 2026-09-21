@@ -32,6 +32,15 @@ from .mdm.goods_import.api import router as goods_import_router
 from .mdm.goods_import import ui_contract as goods_import_ui_contract
 from .mdm.database import dispose_shared_engine
 from .sales.api import router as sales_actual_router, pages as sales_actual_pages
+from .sales.semantic_api import (
+    router as sales_semantic_router,
+    pages as sales_semantic_pages,
+    analytics_router as sales_analytics_router,
+)
+from .sales.pivot_api import (
+    router as sales_pivot_router,
+    pages as sales_pivot_pages,
+)
 from .ordering.api import router as ordering_router, pages as ordering_pages
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -46,6 +55,14 @@ app.include_router(sku_import_router)
 app.include_router(goods_import_router)
 app.include_router(sales_actual_router)
 app.include_router(sales_actual_pages)
+# Lab-only semantic layer spike (Metric + Dimension + Filter driven).
+app.include_router(sales_semantic_router)
+app.include_router(sales_semantic_pages)
+# Actual Sales V2 lightweight analytics (TASK-ASV2-001): SAME engine, production prefix.
+app.include_router(sales_analytics_router)
+# Sales Pivot Workbench (PIVOT-UX-DEMO-V2): generic field-driven workbench.
+app.include_router(sales_pivot_router)
+app.include_router(sales_pivot_pages)
 app.include_router(ordering_router)
 app.include_router(ordering_pages)
 app.include_router(auth_router)
