@@ -8,7 +8,7 @@ Contract (public edition):
 - The month's current Batch is PUBLISHED AND replaced_at IS NULL. A re-publish of
   that same batch is an idempotent no-op; a superseded batch cannot re-publish.
 - On MySQL an advisory lock keyed by source_system + snapshot_month is acquired
-  on the same connection before any transaction work, so two admins cannot
+  on the same connection before the publish transaction reads, so two admins cannot
   interleave two whole-month replaces of the same month.
 """
 from __future__ import annotations
@@ -611,6 +611,10 @@ def publish_batch(
             if probe is None:
                 raise PublishNotFound(f"batch not found: {batch_id}")
             lock_name = _lock_name(probe["source_system"], probe["snapshot_month"])
+            # The routing probe can establish a REPEATABLE READ snapshot before
+            # another publisher commits. End that read-only transaction so all
+            # publish reads see the state committed before we acquire the lock.
+            connection.rollback()
             got = connection.execute(
                 text("SELECT GET_LOCK(:lock_name, :timeout)"),
                 {"lock_name": lock_name, "timeout": int(lock_timeout)},
