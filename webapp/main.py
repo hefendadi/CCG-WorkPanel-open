@@ -50,7 +50,7 @@ app.include_router(ordering_router)
 app.include_router(ordering_pages)
 app.include_router(auth_router)
 app.include_router(portal_router)
-app.add_event_handler("shutdown", dispose_shared_engine)
+app.router.add_event_handler("shutdown", dispose_shared_engine)
 
 
 @app.exception_handler(HTTPException)
