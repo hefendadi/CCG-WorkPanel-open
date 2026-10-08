@@ -73,6 +73,33 @@ publication does not automatically create an Ordering sales source.** Ordering h
 a separate sales actuals file import service. The data used for a plan must be
 explicitly selected in its planning cycle, as explained below.
 
+## Demo Screenshots
+
+These screenshots come from isolated Public Demo instances using entirely fictional
+Synthetic Data. The MDM and Sales data was prepared locally through existing workflows
+for these screenshots and does not represent the default initialization counts;
+Ordering shows the default Synthetic Demo's four-month plan.
+
+### MDM
+
+Manage Products and their SKUs together, with 5 Products and 9 SKUs shown.
+
+![MDM Product and SKU master data](docs/assets/screenshots/mdm-master-data.png)
+
+### Sales Actual
+
+View sales actuals by product and channel, with 3 channels, 4 Products and 2,650 Pcs shown.
+
+![Sales Actual by product and channel](docs/assets/screenshots/sales-actual.png)
+
+### Ordering
+
+Compare inventory, incoming supply and forecasts across a four-month planning window.
+
+[![Ordering four-month inventory and forecast plan](docs/assets/screenshots/ordering-forecast.png)](docs/assets/screenshots/ordering-forecast.png)
+
+[Open the original Ordering PNG to view details](docs/assets/screenshots/ordering-forecast.png).
+
 ## Making Sense of Shared Data — MDM, Mapping and Data Contracts
 
 Using records together starts with confirming which business entities they describe,
