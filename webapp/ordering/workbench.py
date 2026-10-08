@@ -32,6 +32,24 @@ def cycle_context(session, cycle_id, writing=False):
     return cycle
 
 
+def workbench_product_ids(session, bindings, versions, incoming_lines, forecast_lines, orders):
+    """Visible products from exactly the bound periods and selected sources."""
+    ids = {line.product_id for line in incoming_lines} | {
+        line.product_id for line in forecast_lines} | {order.product_id for order in orders}
+    for binding in bindings:
+        version = versions.get(binding.dataset_version_id)
+        if version is None:
+            raise WorkbenchError('Bound source version missing')
+        if version.dataset_type == DatasetType.INVENTORY:
+            model, month = InventoryProductMonth, InventoryProductMonth.inventory_month
+        else:
+            model, month = ActualChannelProductMonth, ActualChannelProductMonth.actual_month
+        ids.update(session.scalars(select(model.product_id).where(
+            model.dataset_version_id == version.id,
+            month.between(binding.period_start, binding.period_end))))
+    return ids
+
+
 def read_workbench(factory, cycle_id):
     with factory() as s, s.begin():
         c = cycle_context(s, cycle_id)
@@ -41,7 +59,7 @@ def read_workbench(factory, cycle_id):
         versions = {v.id: v for v in s.scalars(select(DatasetVersion).where(
             DatasetVersion.id.in_([b.dataset_version_id for b in bindings])))}
         sources = {'ACTUAL': [], 'INVENTORY': []}
-        baseline_ids, actual_ids, inventory_ids = set(), set(), set()
+        baseline_ids = set()
         invalid_baseline = False
         for b in bindings:
             v = versions.get(b.dataset_version_id)
@@ -54,13 +72,6 @@ def read_workbench(factory, cycle_id):
                 if b.period_start <= baseline_month <= b.period_end:
                     baseline_ids.add(v.id)
                     invalid_baseline |= not valid
-                inventory_ids.update(s.scalars(select(InventoryProductMonth.product_id).where(
-                    InventoryProductMonth.dataset_version_id == v.id,
-                    InventoryProductMonth.inventory_month.between(b.period_start, b.period_end))))
-            else:
-                actual_ids.update(s.scalars(select(ActualChannelProductMonth.product_id).where(
-                    ActualChannelProductMonth.dataset_version_id == v.id,
-                    ActualChannelProductMonth.actual_month.between(b.period_start, b.period_end))))
         baseline_state = 'Ready' if len(baseline_ids) == 1 else ('Baseline Missing' if not baseline_ids else 'Baseline Conflict')
         if invalid_baseline:
             baseline_state = 'Baseline Conflict'
@@ -77,7 +88,7 @@ def read_workbench(factory, cycle_id):
             raise WorkbenchError('Selected Forecast does not belong to cycle')
         lines = list(s.scalars(select(ForecastLine).where(ForecastLine.forecast_version_id == forecast.id))) if forecast else []
         orders = {o.product_id: o for o in s.scalars(select(FinalOrder).where(FinalOrder.cycle_id == c.id))}
-        ids = actual_ids | inventory_ids | {l.product_id for l in incoming_lines} | {l.product_id for l in lines} | set(orders)
+        ids = workbench_product_ids(s, bindings, versions, incoming_lines, lines, orders.values())
         locked = c.status == CycleStatus.LOCKED
         if locked:
             products = {p.product_id: (p.product_stable_id, p.product_code, p.product_name) for p in s.scalars(

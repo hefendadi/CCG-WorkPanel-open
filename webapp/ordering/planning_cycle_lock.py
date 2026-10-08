@@ -9,9 +9,10 @@ from sqlalchemy.orm import Session
 from webapp.mdm.models import Product, Channel
 from webapp.ordering.models import (
     PlanningCycle, CycleStatus, CycleSourceBinding, DatasetVersion, DatasetType,
-    IncomingSnapshot, ForecastVersion, ForecastLine, FinalOrder, FinalOrderStatus,
+    IncomingSnapshot, IncomingSnapshotLine, ForecastVersion, ForecastLine, FinalOrder, FinalOrderStatus,
     CycleProductSnapshot, CycleChannelSnapshot,
 )
+from webapp.ordering.workbench import workbench_product_ids
 
 
 class PlanningCycleLockError(RuntimeError):
@@ -50,7 +51,7 @@ def _bindings(session, cycle_id):
         periods[version.dataset_type].append((start, end, version.id))
     if not all(periods.values()):
         raise PlanningCycleLockError('at least one Actual and one Inventory binding are required')
-    return bindings
+    return bindings, versions
 
 
 def lock_planning_cycle(
@@ -68,7 +69,7 @@ def lock_planning_cycle(
             PlanningCycle.cycle_code == cycle_code.strip()).with_for_update())
         if cycle is None or cycle.status != CycleStatus.OPEN:
             raise PlanningCycleLockError('planning cycle must exist and be OPEN')
-        bindings = _bindings(session, cycle.id)
+        bindings, versions = _bindings(session, cycle.id)
         incoming = session.scalar(select(IncomingSnapshot).where(
             IncomingSnapshot.id == incoming_snapshot_id).with_for_update())
         if incoming is None:
@@ -86,7 +87,9 @@ def lock_planning_cycle(
         lines = session.scalars(select(ForecastLine).where(
             ForecastLine.forecast_version_id.in_([v.id for v in forecasts])
         ).with_for_update()).all()
-        product_ids = {o.product_id for o in orders} | {l.product_id for l in lines}
+        incoming_lines = session.scalars(select(IncomingSnapshotLine).where(
+            IncomingSnapshotLine.snapshot_id == incoming_snapshot_id)).all()
+        product_ids = workbench_product_ids(session, bindings, versions, incoming_lines, lines, orders)
         channel_ids = {l.channel_id for l in lines}
         products = session.scalars(select(Product).where(Product.id.in_(product_ids))).all()
         channels = session.scalars(select(Channel).where(Channel.id.in_(channel_ids))).all()
