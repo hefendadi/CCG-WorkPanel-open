@@ -59,6 +59,32 @@ CCG WorkPanel 是一个以主数据管理（MDM）为基础的开源业务数据
 Ordering 当前另有销售实绩文件导入服务；计划使用哪些数据，需要在计划周期中明确选择，
 具体规则见下节。
 
+## 系统界面预览
+
+截图均来自隔离运行的 Public Demo，使用完全虚构的 Synthetic Data。
+MDM 和 Sales 截图的数据在本地通过现有流程额外准备，不代表默认初始化数量；
+Ordering 展示默认 Synthetic Demo 的四个月计划。
+
+### MDM
+
+统一管理 Product 与 SKU，图中展示 5 个 Product 与 9 个 SKU 的对应关系。
+
+![MDM Product 与 SKU 主数据](docs/assets/screenshots/mdm-master-data.png)
+
+### Sales Actual
+
+按产品与渠道查看销售实绩，图中展示 3 个渠道、4 个 Product，共 2,650 Pcs。
+
+![Sales Actual 产品与渠道销售实绩](docs/assets/screenshots/sales-actual.png)
+
+### Ordering
+
+在四个月计划窗口中，结合库存、来货与销售预测推演预计月末库存。
+
+[![Ordering 四个月库存与预测推演](docs/assets/screenshots/ordering-forecast.png)](docs/assets/screenshots/ordering-forecast.png)
+
+[点击打开 Ordering 原始 PNG，查看表格细节](docs/assets/screenshots/ordering-forecast.png)。
+
 ## 数据如何被共同理解？—— MDM、映射与数据契约
 
 要把不同来源的数据放在一起，首先需要确认它们描述的是哪个业务对象，
